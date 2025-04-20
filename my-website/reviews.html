@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pawsible Transportation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 0;
+            background: url('instapostingPT (6).png') no-repeat center center fixed;
+            background-size: cover;
+            height: 100%;
+            overflow-y: scroll;
+        }
+
+        .testimonial-image {
+            width: 90%;
+            max-width: 400px;
+            display: block;
+            margin: 30px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .testimonial-image.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <img src="instapostingPT (7).png" alt="Testimonial 1" class="testimonial-image">
+    <img src="instapostingPT (8).png" alt="Testimonial 2" class="testimonial-image">
+    <img src="instapostingPT (9).png" alt="Testimonial 3" class="testimonial-image">
+    <img src="instapostingPT (10).png" alt="Testimonial 4" class="testimonial-image">
+
+    <script>
+        const images = document.querySelectorAll('.testimonial-image');
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // remove this line if you want them to animate again on re-entry
+                }
+            });
+        }, { threshold: 0.1 });
+
+        images.forEach(image => observer.observe(image));
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pawsible Transportation - About Us</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      overflow: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-image: url('PAWSIBLE TRANSPORTATION.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: scale(0);
+      animation: bgPop 1.5s ease-out forwards;
+      z-index: -1;
+    }
+
+    @keyframes bgPop {
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .header-bar {
+      width: 100%;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      padding: 20px 10px;
+      font-size: 22px;
+      font-style: italic;
+      letter-spacing: 1px;
+      z-index: 1;
+    }
+
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.92);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      opacity: 0;
+      transform: scale(0.8);
+      animation: contentFade 0.5s ease-out 1.5s forwards;
+    }
+
+    @keyframes contentFade {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 34px;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    p {
+      text-align: justify;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 600;
+      font-style: italic;
+      margin-bottom: 16px; /* Space between paragraphs */
+    }
+
+    @media (min-height: 700px) {
+      .overlay {
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="header-bar">Welcome to Pawsible Transportation</div>
+  <div class="overlay">
+    <h1>About Us</h1>
+    <p>
+      At Pawsible Transportation, we believe every pet deserves a safe, smooth, and stress-free journey—whether across the country or around the world. What started as a vision rooted in our passion for animals and our experience in document processing has grown into a trusted service that specializes in both local and international pet transportation.
+    </p>
+    <p>
+      We handle everything from import/export documentation to coordinating with airlines and veterinary services, ensuring your furry companion travels comfortably and compliantly. With a deep understanding of the legal requirements and logistical challenges involved, our team works closely with pet owners to simplify the process and provide peace of mind.
+    </p>
+    <p>
+      Our journey began with a mission: to make pet relocation pawsible for every family. From processing permits to door-to-door delivery, we offer personalized support and a genuine commitment to your pet’s welfare at every step. Whether you’re moving, reuniting with loved ones, or starting a new adventure—Pawsible Transportation is here to help make the transition as smooth as possible.
+    </p>
+    <p>
+      Let us take the stress out of pet travel—because for us, it’s not just logistics. It’s love on the move.
+    </p>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999;"></canvas>
+
+  <script>
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const confetti = [];
+      const colors = ['#ff6f61', '#f7c59f', '#88d8b0', '#ffe066', '#6a4c93'];
+      const confettiCount = 150;
+
+      for (let i = 0; i < confettiCount; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 6 + 4,
+          d: Math.random() * confettiCount,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          tilt: Math.floor(Math.random() * 10) - 5,
+          tiltAngleIncremental: Math.random() * 0.07 + 0.05,
+          tiltAngle: 0
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confetti.forEach((c, i) => {
+          ctx.beginPath();
+          ctx.lineWidth = c.r;
+          ctx.strokeStyle = c.color;
+          ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+          ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+          ctx.stroke();
+        });
+        update();
+      }
+
+      function update() {
+        confetti.forEach((c, i) => {
+          c.tiltAngle += c.tiltAngleIncremental;
+          c.y -= (Math.cos(c.d) + 3 + c.r / 2) / 2; // Moving upward
+          c.x += Math.sin(c.d);
+          c.tilt = Math.sin(c.tiltAngle - i / 3) * 15;
+        });
+      }
+
+      let animationFrame;
+      function loop() {
+        draw();
+        animationFrame = requestAnimationFrame(loop);
+      }
+
+      loop();
+
+      // Stop animation after 2.5s
+      setTimeout(() => {
+        cancelAnimationFrame(animationFrame);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }, 2500);
+    }
+
+    // Trigger confetti 2s after content animation
+    setTimeout(launchConfetti, 2000);
+  </script>
+</body>
+</html>
